@@ -1,0 +1,17 @@
+{
+  "name": "CATCH Glitch Launcher",
+  "short_name": "CATCH",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Neon glitch launcher concept with the CATCH mark.",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
