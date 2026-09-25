@@ -2,298 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>CATCH — Glitch Launcher</title>
-  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glitch Launcher — download APK</title>
   <link rel="icon" href="logo.svg" type="image/svg+xml" />
   <style>
-    :root {
-      --cyan: #00e8ff;
-      --lime: #7cff2b;
-      --yellow: #ffe14a;
-      --pink: #ff2d9a;
-      --white: #f4f4f4;
-      --purple: #9b4dff;
-      --panel: #141418;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      background: #050505;
-      color: #fff;
+    :root { --cyan:#00e8ff; --lime:#7cff2b; --yellow:#ffe14a; --pink:#ff2d9a; --purple:#9b4dff; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: #050505; color: #fff;
       font-family: "Segoe UI", system-ui, sans-serif;
-      overflow: hidden;
-      user-select: none;
-      -webkit-user-select: none;
+      display: grid; place-items: center; padding: 32px 18px;
     }
-    body { display: grid; place-items: center; }
-    .phone {
-      width: min(420px, 100vw);
-      height: min(860px, 100dvh);
-      background: #000;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 0 1px #1a1a1a, 0 30px 80px rgba(0,0,0,.7);
+    main { max-width: 560px; text-align: center; }
+    .mark {
+      display: flex; justify-content: center; gap: 10px; margin-bottom: 18px;
+      font-size: 42px; font-weight: 800;
     }
-    .noise {
-      pointer-events: none;
-      position: absolute;
-      inset: 0;
-      opacity: .12;
-      background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.03) 3px),
-        radial-gradient(circle at 20% 10%, rgba(0,232,255,.08), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(155,77,255,.08), transparent 40%);
-      animation: flicker 4s steps(3) infinite;
+    .mark span { text-shadow: 0 0 16px currentColor; }
+    h1 { font-size: 34px; margin: 0 0 8px; }
+    p { color: #c8c8c8; line-height: 1.5; }
+    .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 22px 0; }
+    a, button {
+      appearance: none; border: 0; border-radius: 999px; padding: 14px 22px;
+      font-weight: 700; font-size: 16px; cursor: pointer; text-decoration: none;
     }
-    @keyframes flicker {
-      0%, 90%, 100% { opacity: .12; }
-      92% { opacity: .2; }
-      94% { opacity: .08; }
-    }
-    .screen { position: absolute; inset: 0; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .35s; }
-    .screen.away { transform: translateY(-8%); opacity: 0; pointer-events: none; }
-    .status {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 18px 0;
-      font-size: 13px;
-      color: #ddd;
-    }
-    .clock-wrap { text-align: center; padding-top: 28px; position: relative; }
-    .clock {
-      font-weight: 700;
-      font-size: 86px;
-      letter-spacing: -2px;
-      line-height: 1;
-      position: relative;
-      display: inline-block;
-    }
-    .clock .base { color: #fff; }
-    .clock .r, .clock .b {
-      position: absolute; left: 0; top: 0; pointer-events: none;
-      mix-blend-mode: screen;
-    }
-    .clock .r { color: #ff3b7a; transform: translate(-2px, 1px); opacity: .7; }
-    .clock .b { color: #2ad4ff; transform: translate(2px, -1px); opacity: .7; }
-    .date { margin-top: 8px; color: #d8d8d8; font-size: 18px; font-weight: 500; }
-    .stack {
-      margin: 36px auto 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      filter: drop-shadow(0 0 10px rgba(0,232,255,.25));
-    }
-    .glyph {
-      font-size: 58px;
-      font-weight: 800;
-      line-height: .9;
-      text-shadow: 0 0 18px currentColor;
-    }
-    .g-c { color: var(--cyan); }
-    .g-a { color: var(--lime); font-size: 52px; }
-    .g-x { color: var(--yellow); }
-    .g-t { color: var(--pink); }
-    .g-p { color: var(--white); }
-    .g-h { color: var(--purple); }
-    .unlock {
-      position: absolute;
-      left: 0; right: 0; bottom: 28px;
-      text-align: center;
-      color: #cfcfcf;
-    }
-    .lock {
-      width: 28px; height: 28px; margin: 0 auto 10px;
-      border: 2px solid #fff; border-radius: 6px; position: relative;
-    }
-    .lock:before {
-      content: "";
-      position: absolute;
-      width: 14px; height: 10px;
-      border: 2px solid #fff;
-      border-bottom: 0;
-      border-radius: 10px 10px 0 0;
-      left: 5px; top: -10px;
-    }
-    .hint { font-size: 15px; }
-    #home { background: #000; }
-    .home-clock { padding-top: 42px; }
-    .home-clock .clock { font-size: 78px; }
-    .ghost-letters {
-      position: absolute;
-      inset: 40px 10px 280px;
-      pointer-events: none;
-      opacity: .28;
-    }
-    .ghost-letters span {
-      position: absolute;
-      font-size: 92px;
-      font-weight: 800;
-    }
-    .grid {
-      position: absolute;
-      left: 16px; right: 16px;
-      top: 250px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px 12px;
-    }
-    .app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 7px;
-      cursor: pointer;
-      background: none;
-      border: 0;
-      color: inherit;
-    }
-    .icon {
-      width: 58px; height: 58px;
-      border-radius: 16px;
-      background: var(--panel);
-      display: grid;
-      place-items: center;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-    }
-    .icon svg { width: 28px; height: 28px; }
-    .label { font-size: 12px; color: #e8e8e8; }
-    .dots {
-      position: absolute;
-      left: 0; right: 0;
-      bottom: 118px;
-      display: flex;
-      justify-content: center;
-      gap: 7px;
-    }
-    .dots i { width: 6px; height: 6px; border-radius: 50%; background: #444; display: block; }
-    .dots i.on { background: #fff; }
-    .dock {
-      position: absolute;
-      left: 14px; right: 14px; bottom: 22px;
-      height: 78px;
-      background: #121214;
-      border-radius: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 8px;
-    }
-    .dock .icon { width: 52px; height: 52px; background: transparent; }
-    .catch-btn {
-      width: 58px; height: 58px;
-      border-radius: 50%;
-      background: #0b0b0b;
-      border: 2px solid #2a2a2a;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-    }
-    .catch-btn svg { width: 40px; height: 40px; }
-    .toast {
-      position: absolute;
-      left: 50%;
-      bottom: 120px;
-      transform: translateX(-50%) translateY(20px);
-      background: #1c1c20;
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      opacity: 0;
-      pointer-events: none;
-      transition: .25s;
-      white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    @media (min-width: 720px) {
-      body { background: #111; }
-      .phone { border-radius: 28px; }
-    }
+    .dl { background: var(--cyan); color: #000; }
+    .demo { background: #1a1a1e; color: #fff; box-shadow: inset 0 0 0 1px #333; }
+    ol { text-align: left; color: #ddd; line-height: 1.55; padding-left: 20px; }
+    .note { font-size: 13px; color: #888; margin-top: 24px; }
+    .note a { color: var(--cyan); }
   </style>
 </head>
 <body>
-  <div class="phone" id="phone">
-    <div class="noise"></div>
-    <section class="screen" id="lock">
-      <div class="status">
-        <span id="lockTimeSmall">1:47</span>
-        <span>84%</span>
-      </div>
-      <div class="clock-wrap">
-        <div class="clock" id="lockClock">
-          <span class="r">1:47</span>
-          <span class="b">1:47</span>
-          <span class="base">1:47</span>
-        </div>
-        <div class="date" id="lockDate">Friday, September 25</div>
-      </div>
-      <div class="stack" aria-label="CATCH">
-        <div class="glyph g-c">C</div>
-        <div class="glyph g-a">▲</div>
-        <div class="glyph g-x">✕</div>
-        <div class="glyph g-t">T</div>
-        <div class="glyph g-p">ᗤ</div>
-        <div class="glyph g-h">H</div>
-      </div>
-      <div class="unlock">
-        <div class="lock"></div>
-        <div class="hint">Swipe up to unlock</div>
-      </div>
-    </section>
-    <section class="screen away" id="home">
-      <div class="status">
-        <span id="homeTimeSmall">1:47</span>
-        <span>84%</span>
-      </div>
-      <div class="ghost-letters">
-        <span class="g-c" style="left:8%;top:70px">C</span>
-        <span class="g-a" style="left:38%;top:8px;font-size:110px">▲</span>
-        <span class="g-x" style="right:6%;top:40px">✕</span>
-        <span class="g-t" style="left:28%;top:90px">✕</span>
-        <span class="g-h" style="right:18%;top:120px">H</span>
-      </div>
-      <div class="clock-wrap home-clock">
-        <div class="clock" id="homeClock">
-          <span class="r">1:47</span>
-          <span class="b">1:47</span>
-          <span class="base">1:47</span>
-        </div>
-        <div class="date" id="homeDate">Fri, Sep 25</div>
-      </div>
-      <div class="grid" id="grid"></div>
-      <div class="dots"><i class="on"></i><i></i></div>
-      <nav class="dock">
-        <div class="icon" data-app="Phone">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#00e8ff" stroke-width="2"><path d="M6 4h3l2 5-2 2a12 12 0 0 0 6 6l2-2 5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 4 6a2 2 0 0 1 2-2z"/></svg>
-        </div>
-        <div class="icon" data-app="Messages">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#7cff2b" stroke-width="2"><path d="M4 6h16v10H8l-4 4V6z"/></svg>
-        </div>
-        <button class="catch-btn" id="lockAgain" aria-label="CATCH">
-          <svg viewBox="0 0 64 64">
-            <text x="8" y="22" font-size="16" fill="#00e8ff" font-weight="800">C</text>
-            <text x="26" y="20" font-size="14" fill="#7cff2b">▲</text>
-            <text x="42" y="22" font-size="16" fill="#ffe14a" font-weight="800">X</text>
-            <text x="10" y="46" font-size="16" fill="#ff2d9a" font-weight="800">C</text>
-            <text x="26" y="48" font-size="14" fill="#7cff2b">▼</text>
-            <text x="42" y="46" font-size="16" fill="#9b4dff" font-weight="800">H</text>
-          </svg>
-        </button>
-        <div class="icon" data-app="Camera">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#ff2d9a" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="3"/><circle cx="12" cy="13.5" r="3.2"/><path d="M9 7l1.4-2h3.2L15 7"/></svg>
-        </div>
-        <div class="icon" data-app="Music">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="2.4"/><circle cx="17" cy="16" r="2.4"/></svg>
-        </div>
-      </nav>
-    </section>
-    <div class="toast" id="toast"></div>
-  </div>
-  <script src="app.js"></script>
+  <main>
+    <div class="mark" aria-hidden="true">
+      <span style="color:var(--cyan)">C</span>
+      <span style="color:var(--lime)">▲</span>
+      <span style="color:var(--yellow)">X</span>
+      <span style="color:var(--pink)">T</span>
+      <span style="color:#fff">C</span>
+      <span style="color:var(--purple)">H</span>
+    </div>
+    <h1>Glitch Launcher</h1>
+    <p>Neon CATCH home screen for Android. Download the APK, install it, then set it as your Home app.</p>
+    <div class="row">
+      <button class="dl" id="dl">Download APK</button>
+      <a class="demo" href="demo.html">Open live demo</a>
+    </div>
+    <ol>
+      <li>Tap <b>Download APK</b> and open the file on your phone.</li>
+      <li>Allow installs from this source if Android asks.</li>
+      <li>Open <b>Glitch Launcher</b>.</li>
+      <li>Go to <b>Settings → Apps → Default apps → Home app</b> and pick <b>Glitch Launcher</b>.</li>
+      <li>Press the Home button. The CATCH lock screen and your real apps should appear.</li>
+    </ol>
+    <p class="note">To switch back later: Settings → Default apps → Home app → your old launcher.<br>
+    Repo: <a href="https://github.com/Glitchplays1/catch-glitch-launcher">Glitchplays1/catch-glitch-launcher</a></p>
+  </main>
+  <script src="download.js"></script>
+  <script>
+    document.getElementById("dl").addEventListener("click", function () {
+      if (typeof downloadApk === "function") downloadApk();
+    });
+  </script>
 </body>
 </html>

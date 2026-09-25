@@ -1,36 +1,27 @@
-# CATCH — Glitch Launcher
+# Glitch Launcher (CATCH)
 
-Neon glitch Android launcher look: black screen, RGB-split clock, and the CATCH mark.
+A neon Android **home launcher**. Install the APK, then set **Glitch Launcher** as your Home app so the Home button opens the CATCH lock screen and your real apps.
 
-## Download the APK
-
-Install **CATCH.apk** on your Android phone.
-
-1. Download `CATCH.apk` from this chat or rebuild it with `android/build.sh`
-2. On your phone open **Settings → Security** and allow apps from this source / unknown apps for your Files app
-3. Open the APK and tap **Install**
-4. Open the new **CATCH** app
-
-Swipe up (or tap) the lock screen to reach the home grid. Tap the round CATCH button to lock again. Back goes to the lock screen; back again closes the app.
-
-This APK is a **look-alike launcher inside an app**. It does not replace your real Android home screen, and the icons are demo buttons (they show the app name, they do not open Phone or Chrome).
-
-## Web preview
+## Download site
 
 https://glitchplays1.github.io/catch-glitch-launcher/
 
-## Build the APK yourself
+Turn on GitHub Pages if that link is empty: **Settings → Pages → Deploy from a branch → main / (root)**.
 
-You need the Android SDK command-line tools (platform 34 and build-tools 34).
+## Set it as Home
 
-```bash
-cd android
-export ANDROID_SDK_ROOT=/path/to/android-sdk
-./build.sh
-```
+1. Install `GlitchLauncher.apk`
+2. Open **Settings → Apps → Default apps → Home app**
+3. Choose **Glitch Launcher**
+4. Press Home
 
-The signed file is `android/CATCH.apk`.
+To undo: same screen, pick your old launcher (usually Quickstep / One UI Home / Pixel Launcher).
 
-Package name: `com.glitchplays1.catchlauncher`
+## What it does
 
-Made for [Glitchplays1](https://github.com/Glitchplays1).
+- Looks like the CATCH lock screen and home grid
+- Lists the real apps on the phone and opens them
+- Dock shortcuts: Phone, Messages, Camera, Settings
+- Banner helps you open Home-app settings if Glitch is not default yet
+
+Package: `com.glitchplays1.catchlauncher`
